@@ -1,0 +1,665 @@
+Authenticating with public key "imported-openssh-key"
+     ┌────────────────────────────────────────────────────────────────────┐
+     │                        • MobaXterm 11.0 •                          │
+     │            (SSH client, X-server and networking tools)             │
+     │                                                                    │
+     │ ➤ SSH session to ubuntu@3.83.93.248                                │
+     │   • SSH compression : ✔                                            │
+     │   • SSH-browser     : ✔                                            │
+     │   • X11-forwarding  : ✔  (remote display is forwarded through SSH) │
+     │   • DISPLAY         : ✔  (automatically set on remote server)      │
+     │                                                                    │
+     │ ➤ For more info, ctrl+click on help or visit our website           │
+     └────────────────────────────────────────────────────────────────────┘
+
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-1031-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Jan  5 04:01:40 UTC 2019
+
+  System load:  0.0               Processes:           90
+  Usage of /:   21.8% of 7.69GB   Users logged in:     0
+  Memory usage: 14%               IP address for eth0: 172.31.83.190
+  Swap usage:   0%
+
+ * MicroK8s is Kubernetes in a snap. Made by devs for devs.
+   One quick install on a workstation, VM, or appliance.
+
+   - https://bit.ly/microk8s
+
+ * Full K8s GPU support is now available!
+
+   - https://blog.ubuntu.com/2018/12/10/using-gpgpus-with-kubernetes
+
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+90 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Wed Jan  2 08:58:17 2019 from 124.123.84.246
+ubuntu@master:~$ sudo -i
+root@master:~# find . -type f |xargs -size 1m ls{}\;
+xargs: invalid number "ize" for -s option
+Try 'xargs --help' for more information.
+root@master:~# find . -type f -size 10m
+find: invalid -size type `m'
+root@master:~# find . -type f -size 10M
+root@master:~# find . -type f -size 1M
+./.profile
+./.bash_history
+./.viminfo
+./.ssh/id_rsa
+./.ssh/known_hosts
+./.ssh/authorized_keys
+./.ssh/id_rsa.pub
+./.bashrc
+root@master:~# truncate -s 5M rajendra.txt
+root@master:~# ls
+rajendra.txt  snap
+root@master:~# ls -ltr
+total 4
+drwxr-xr-x 3 root root    4096 Jan  2 08:58 snap
+-rw-r--r-- 1 root root 5242880 Jan  5 04:04 rajendra.txt
+root@master:~# rm -rf rajendra.txt
+root@master:~# ls -ltr
+total 4
+drwxr-xr-x 3 root root 4096 Jan  2 08:58 snap
+root@master:~# vin list.sh
+
+Command 'vin' not found, but there are 28 similar ones.
+
+root@master:~# vi list.sh
+root@master:~# sh list.sh
+list of files with 1mb sized
+find: paths must precede expression: `size'
+create new file with perticular size
+total 8
+drwxr-xr-x 3 root root    4096 Jan  2 08:58 snap
+-rw-r--r-- 1 root root     200 Jan  5 04:10 list.sh
+-rw-r--r-- 1 root root 5242880 Jan  5 04:10 rajendra.txt
+remove file
+total 8
+drwxr-xr-x 3 root root 4096 Jan  2 08:58 snap
+-rw-r--r-- 1 root root  200 Jan  5 04:10 list.sh
+root@master:~# vi list.sh
+root@master:~# sh list.sh
+list of files with 1mb sized
+./.profile
+./.bash_history
+./list.sh
+./.viminfo
+./.ssh/id_rsa
+./.ssh/known_hosts
+./.ssh/authorized_keys
+./.ssh/id_rsa.pub
+./.bashrc
+create new file with perticular size
+total 8
+drwxr-xr-x 3 root root    4096 Jan  2 08:58 snap
+-rw-r--r-- 1 root root     201 Jan  5 04:11 list.sh
+-rw-r--r-- 1 root root 5242880 Jan  5 04:11 rajendra.txt
+remove file
+total 8
+drwxr-xr-x 3 root root 4096 Jan  2 08:58 snap
+-rw-r--r-- 1 root root  201 Jan  5 04:11 list.sh
+root@master:~# corntab -e
+
+Command 'corntab' not found, did you mean:
+
+  command 'crontab' from deb cron
+  command 'crontab' from deb bcron-run
+  command 'crontab' from deb systemd-cron
+
+Try: apt install <deb name>
+
+root@master:~# crontab -e
+no crontab for root - using an empty one
+
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        <---- easiest
+  2. /usr/bin/vim.basic
+  3. /usr/bin/vim.tiny
+  4. /bin/ed
+
+Choose 1-4 [1]: 2
+crontab: installing new crontab
+root@master:~# crontab -l
+# Edit this file to introduce tasks to be run by cron.
+#
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+#
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').#
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+#
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+# m h  dom mon dow   command
+1 * * * * /root/list.sh
+root@master:~#
+root@master:~# top
+top - 04:15:08 up 18 min,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks:  91 total,   1 running,  57 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1007532 total,   458104 free,    96080 used,   453348 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   764136 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+ 1865 root      20   0   44528   4000   3392 R  0.3  0.4   0:00.05 top
+    1 root      20   0  159536   8888   6816 S  0.0  0.9   0:02.60 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kthreadd
+    3 root      20   0       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
+    5 root      20   0       0      0      0 I  0.0  0.0   0:00.02 kworker/u30:0
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+    7 root      20   0       0      0      0 S  0.0  0.0   0:00.05 ksoftirqd/0
+    8 root      20   0       0      0      0 I  0.0  0.0   0:00.16 rcu_sched
+    9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh
+   10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+   11 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 watchdog/0
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   13 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   14 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   15 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_kthre
+   16 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kauditd
+   17 root      20   0       0      0      0 S  0.0  0.0   0:00.00 xenbus
+   18 root      20   0       0      0      0 S  0.0  0.0   0:00.01 xenwatch
+   20 root      20   0       0      0      0 S  0.0  0.0   0:00.00 khungtaskd
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+   22 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+   23 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kcompactd0
+   24 root      25   5       0      0      0 S  0.0  0.0   0:00.00 ksmd
+   25 root      39  19       0      0      0 S  0.0  0.0   0:00.00 khugepaged
+   26 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 crypto
+   27 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kintegrityd
+   28 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kblockd
+   29 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 ata_sff
+   30 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 md
+   31 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 edac-poller
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~#
+root@master:~# crontab -l
+# Edit this file to introduce tasks to be run by cron.
+#
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+#
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').#
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+#
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+# m h  dom mon dow   command
+1 * * * * /root/list.sh
+root@master:~# pwd
+/root
+root@master:~# ls
+list.sh  snap
+root@master:~#
+root@master:~# vi list.sh
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# top
+top - 04:19:34 up 23 min,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks:  90 total,   1 running,  57 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.3 us,  0.3 sy,  0.0 ni, 99.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1007532 total,   457740 free,    96332 used,   453460 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   763868 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    1 root      20   0  159536   8888   6816 S  0.0  0.9   0:02.60 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kthreadd
+    3 root      20   0       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+    7 root      20   0       0      0      0 S  0.0  0.0   0:00.05 ksoftirqd/0
+    8 root      20   0       0      0      0 I  0.0  0.0   0:00.16 rcu_sched
+    9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh
+   10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+   11 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 watchdog/0
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   13 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   14 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   15 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_kthre
+   16 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kauditd
+   17 root      20   0       0      0      0 S  0.0  0.0   0:00.00 xenbus
+   18 root      20   0       0      0      0 S  0.0  0.0   0:00.01 xenwatch
+   20 root      20   0       0      0      0 S  0.0  0.0   0:00.00 khungtaskd
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+   22 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+   23 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kcompactd0
+   24 root      25   5       0      0      0 S  0.0  0.0   0:00.00 ksmd
+   25 root      39  19       0      0      0 S  0.0  0.0   0:00.00 khugepaged
+   26 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 crypto
+   27 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kintegrityd
+   28 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kblockd
+   29 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 ata_sff
+   30 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 md
+   31 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 edac-poller
+   32 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 devfreq_wq
+   33 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 watchdogd
+root@master:~# crontab -e
+crontab: installing new crontab
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# crontab -e
+crontab: installing new crontab
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# top
+top - 04:24:03 up 27 min,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks:  91 total,   1 running,  57 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1007532 total,   457188 free,    96736 used,   453608 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   763444 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+ 1663 ubuntu    20   0  108296   5332   4072 S  0.3  0.5   0:00.21 sshd
+    1 root      20   0  159536   8888   6816 S  0.0  0.9   0:02.60 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kthreadd
+    3 root      20   0       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+    7 root      20   0       0      0      0 S  0.0  0.0   0:00.05 ksoftirqd/0
+    8 root      20   0       0      0      0 I  0.0  0.0   0:00.16 rcu_sched
+    9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh
+   10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+   11 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 watchdog/0
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   13 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   14 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   15 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_kthre
+   16 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kauditd
+   17 root      20   0       0      0      0 S  0.0  0.0   0:00.00 xenbus
+   18 root      20   0       0      0      0 S  0.0  0.0   0:00.01 xenwatch
+   20 root      20   0       0      0      0 S  0.0  0.0   0:00.00 khungtaskd
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+   22 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+   23 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kcompactd0
+   24 root      25   5       0      0      0 S  0.0  0.0   0:00.00 ksmd
+   25 root      39  19       0      0      0 S  0.0  0.0   0:00.00 khugepaged
+   26 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 crypto
+   27 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kintegrityd
+   28 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kblockd
+   29 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 ata_sff
+   30 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 md
+   31 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 edac-poller
+   32 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 devfreq_wq
+root@master:~# ls
+list.sh  snap
+root@master:~#
+root@master:~#
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# ls
+list.sh  snap
+root@master:~# crontab -e
+crontab: installing new crontab
+root@master:~# crontab -r
+root@master:~# crontab -l
+no crontab for root
+root@master:~# vi s3.yml
+root@master:~# ansible-palybook s3.yml
+
+Command 'ansible-palybook' not found, did you mean:
+
+  command 'ansible-playbook' from deb ansible
+
+Try: apt install <deb name>
+
+root@master:~# cd /etc/ansible/
+root@master:/etc/ansible# ls
+ansible.cfg  hosts  roles
+root@master:/etc/ansible# cp /root/s3.yml .
+root@master:/etc/ansible# ansible-playbook s3.yml
+
+PLAY [localhost] ************************************************************************************************************************
+
+TASK [createa s3 bucket] ****************************************************************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Python modules \"botocore\" or \"boto3\" are missing, please install both"}
+        to retry, use: --limit @/etc/ansible/s3.retry
+
+PLAY RECAP ******************************************************************************************************************************
+localhost                  : ok=0    changed=0    unreachable=0    failed=1
+
+root@master:/etc/ansible# apt-get install python-boto3
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  docutils-common docutils-doc javascript-common libjbig0 libjpeg-turbo8 libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore
+  liblcms2-2 libpaper-utils libpaper1 libtiff5 libwebp6 libwebpdemux2 libwebpmux3 python-botocore python-certifi python-chardet
+  python-concurrent.futures python-dateutil python-docutils python-jmespath python-olefile python-openssl python-pil python-pygments
+  python-requests python-roman python-s3transfer python-urllib3 sgml-base xml-core
+Suggested packages:
+  apache2 | lighttpd | httpd liblcms2-utils fonts-linuxlibertine | ttf-linux-libertine texlive-lang-french texlive-latex-base
+  texlive-latex-recommended python-openssl-doc python-openssl-dbg python-pil-doc python-pil-dbg ttf-bitstream-vera python-socks
+  python-ntlm sgml-base-doc debhelper
+The following NEW packages will be installed:
+  docutils-common docutils-doc javascript-common libjbig0 libjpeg-turbo8 libjpeg8 libjs-jquery libjs-sphinxdoc libjs-underscore
+  liblcms2-2 libpaper-utils libpaper1 libtiff5 libwebp6 libwebpdemux2 libwebpmux3 python-boto3 python-botocore python-certifi
+  python-chardet python-concurrent.futures python-dateutil python-docutils python-jmespath python-olefile python-openssl python-pil
+  python-pygments python-requests python-roman python-s3transfer python-urllib3 sgml-base xml-core
+0 upgraded, 34 newly installed, 0 to remove and 88 not upgraded.
+Need to get 5775 kB of archives.
+After this operation, 45.5 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjpeg-turbo8 amd64 1.5.2-0ubuntu5.18.04.1 [110 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 sgml-base all 1.29 [12.3 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 xml-core all 0.18 [21.3 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 docutils-common all 0.14+dfsg-3 [156 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 docutils-doc all 0.14+dfsg-3 [913 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 javascript-common all 11 [6066 B]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libjpeg8 amd64 8c-2ubuntu8 [2194 B]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-jquery all 3.2.1-1 [152 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-underscore all 1.8.3~dfsg-1 [59.9 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libjs-sphinxdoc all 1.6.7-1ubuntu1 [85.6 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 liblcms2-2 amd64 2.9-1ubuntu0.1 [139 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libpaper1 amd64 1.1.24+nmu5ubuntu1 [13.6 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libpaper-utils amd64 1.1.24+nmu5ubuntu1 [8170 B]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libjbig0 amd64 2.1-3.1build1 [26.7 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libtiff5 amd64 4.0.9-5 [152 kB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libwebp6 amd64 0.6.1-2 [185 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libwebpdemux2 amd64 0.6.1-2 [9472 B]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 libwebpmux3 amd64 0.6.1-2 [19.6 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-dateutil all 2.6.1-1 [60.6 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-roman all 2.0.0-3 [8548 B]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-docutils all 0.14+dfsg-3 [365 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-jmespath all 0.9.3-1ubuntu1 [21.2 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-certifi all 2018.1.18-2 [144 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-chardet all 3.0.4-1 [80.3 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-urllib3 all 1.22-1 [85.1 kB]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic-updates/main amd64 python-requests all 2.18.4-2ubuntu0.1 [58.5 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/universe amd64 python-botocore all 1.8.48+repack-1 [1765 kB]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-concurrent.futures all 3.2.0-1 [34.2 kB]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/universe amd64 python-s3transfer all 0.1.13-1 [39.8 kB]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/universe amd64 python-boto3 all 1.4.2-1 [62.0 kB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-olefile all 0.45.1-1 [33.2 kB]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-openssl all 17.5.0-1ubuntu1 [41.3 kB]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-pil amd64 5.1.0-1 [328 kB]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/main amd64 python-pygments all 2.2.0+dfsg-1 [577 kB]
+Fetched 5775 kB in 0s (21.1 MB/s)
+Extracting templates from packages: 100%
+Preconfiguring packages ...
+Selecting previously unselected package libjpeg-turbo8:amd64.
+(Reading database ... 89050 files and directories currently installed.)
+Preparing to unpack .../00-libjpeg-turbo8_1.5.2-0ubuntu5.18.04.1_amd64.deb ...
+Unpacking libjpeg-turbo8:amd64 (1.5.2-0ubuntu5.18.04.1) ...
+Selecting previously unselected package sgml-base.
+Preparing to unpack .../01-sgml-base_1.29_all.deb ...
+Unpacking sgml-base (1.29) ...
+Selecting previously unselected package xml-core.
+Preparing to unpack .../02-xml-core_0.18_all.deb ...
+Unpacking xml-core (0.18) ...
+Selecting previously unselected package docutils-common.
+Preparing to unpack .../03-docutils-common_0.14+dfsg-3_all.deb ...
+Unpacking docutils-common (0.14+dfsg-3) ...
+Selecting previously unselected package docutils-doc.
+Preparing to unpack .../04-docutils-doc_0.14+dfsg-3_all.deb ...
+Unpacking docutils-doc (0.14+dfsg-3) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../05-javascript-common_11_all.deb ...
+Unpacking javascript-common (11) ...
+Selecting previously unselected package libjpeg8:amd64.
+Preparing to unpack .../06-libjpeg8_8c-2ubuntu8_amd64.deb ...
+Unpacking libjpeg8:amd64 (8c-2ubuntu8) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../07-libjs-jquery_3.2.1-1_all.deb ...
+Unpacking libjs-jquery (3.2.1-1) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../08-libjs-underscore_1.8.3~dfsg-1_all.deb ...
+Unpacking libjs-underscore (1.8.3~dfsg-1) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../09-libjs-sphinxdoc_1.6.7-1ubuntu1_all.deb ...
+Unpacking libjs-sphinxdoc (1.6.7-1ubuntu1) ...
+Selecting previously unselected package liblcms2-2:amd64.
+Preparing to unpack .../10-liblcms2-2_2.9-1ubuntu0.1_amd64.deb ...
+Unpacking liblcms2-2:amd64 (2.9-1ubuntu0.1) ...
+Selecting previously unselected package libpaper1:amd64.
+Preparing to unpack .../11-libpaper1_1.1.24+nmu5ubuntu1_amd64.deb ...
+Unpacking libpaper1:amd64 (1.1.24+nmu5ubuntu1) ...
+Selecting previously unselected package libpaper-utils.
+Preparing to unpack .../12-libpaper-utils_1.1.24+nmu5ubuntu1_amd64.deb ...
+Unpacking libpaper-utils (1.1.24+nmu5ubuntu1) ...
+Selecting previously unselected package libjbig0:amd64.
+Preparing to unpack .../13-libjbig0_2.1-3.1build1_amd64.deb ...
+Unpacking libjbig0:amd64 (2.1-3.1build1) ...
+Selecting previously unselected package libtiff5:amd64.
+Preparing to unpack .../14-libtiff5_4.0.9-5_amd64.deb ...
+Unpacking libtiff5:amd64 (4.0.9-5) ...
+Selecting previously unselected package libwebp6:amd64.
+Preparing to unpack .../15-libwebp6_0.6.1-2_amd64.deb ...
+Unpacking libwebp6:amd64 (0.6.1-2) ...
+Selecting previously unselected package libwebpdemux2:amd64.
+Preparing to unpack .../16-libwebpdemux2_0.6.1-2_amd64.deb ...
+Unpacking libwebpdemux2:amd64 (0.6.1-2) ...
+Selecting previously unselected package libwebpmux3:amd64.
+Preparing to unpack .../17-libwebpmux3_0.6.1-2_amd64.deb ...
+Unpacking libwebpmux3:amd64 (0.6.1-2) ...
+Selecting previously unselected package python-dateutil.
+Preparing to unpack .../18-python-dateutil_2.6.1-1_all.deb ...
+Unpacking python-dateutil (2.6.1-1) ...
+Selecting previously unselected package python-roman.
+Preparing to unpack .../19-python-roman_2.0.0-3_all.deb ...
+Unpacking python-roman (2.0.0-3) ...
+Selecting previously unselected package python-docutils.
+Preparing to unpack .../20-python-docutils_0.14+dfsg-3_all.deb ...
+Unpacking python-docutils (0.14+dfsg-3) ...
+Selecting previously unselected package python-jmespath.
+Preparing to unpack .../21-python-jmespath_0.9.3-1ubuntu1_all.deb ...
+Unpacking python-jmespath (0.9.3-1ubuntu1) ...
+Selecting previously unselected package python-certifi.
+Preparing to unpack .../22-python-certifi_2018.1.18-2_all.deb ...
+Unpacking python-certifi (2018.1.18-2) ...
+Selecting previously unselected package python-chardet.
+Preparing to unpack .../23-python-chardet_3.0.4-1_all.deb ...
+Unpacking python-chardet (3.0.4-1) ...
+Selecting previously unselected package python-urllib3.
+Preparing to unpack .../24-python-urllib3_1.22-1_all.deb ...
+Unpacking python-urllib3 (1.22-1) ...
+Selecting previously unselected package python-requests.
+Preparing to unpack .../25-python-requests_2.18.4-2ubuntu0.1_all.deb ...
+Unpacking python-requests (2.18.4-2ubuntu0.1) ...
+Selecting previously unselected package python-botocore.
+Preparing to unpack .../26-python-botocore_1.8.48+repack-1_all.deb ...
+Unpacking python-botocore (1.8.48+repack-1) ...
+Selecting previously unselected package python-concurrent.futures.
+Preparing to unpack .../27-python-concurrent.futures_3.2.0-1_all.deb ...
+Unpacking python-concurrent.futures (3.2.0-1) ...
+Selecting previously unselected package python-s3transfer.
+Preparing to unpack .../28-python-s3transfer_0.1.13-1_all.deb ...
+Unpacking python-s3transfer (0.1.13-1) ...
+Selecting previously unselected package python-boto3.
+Preparing to unpack .../29-python-boto3_1.4.2-1_all.deb ...
+Unpacking python-boto3 (1.4.2-1) ...
+Selecting previously unselected package python-olefile.
+Preparing to unpack .../30-python-olefile_0.45.1-1_all.deb ...
+Unpacking python-olefile (0.45.1-1) ...
+Selecting previously unselected package python-openssl.
+Preparing to unpack .../31-python-openssl_17.5.0-1ubuntu1_all.deb ...
+Unpacking python-openssl (17.5.0-1ubuntu1) ...
+Selecting previously unselected package python-pil:amd64.
+Preparing to unpack .../32-python-pil_5.1.0-1_amd64.deb ...
+Unpacking python-pil:amd64 (5.1.0-1) ...
+Selecting previously unselected package python-pygments.
+Preparing to unpack .../33-python-pygments_2.2.0+dfsg-1_all.deb ...
+Unpacking python-pygments (2.2.0+dfsg-1) ...
+Setting up libjs-jquery (3.2.1-1) ...
+Setting up libpaper1:amd64 (1.1.24+nmu5ubuntu1) ...
+
+Creating config file /etc/papersize with new version
+Setting up python-urllib3 (1.22-1) ...
+Setting up libpaper-utils (1.1.24+nmu5ubuntu1) ...
+Setting up python-chardet (3.0.4-1) ...
+Setting up libjs-underscore (1.8.3~dfsg-1) ...
+Setting up liblcms2-2:amd64 (2.9-1ubuntu0.1) ...
+Setting up python-openssl (17.5.0-1ubuntu1) ...
+Setting up libjbig0:amd64 (2.1-3.1build1) ...
+Setting up python-jmespath (0.9.3-1ubuntu1) ...
+Setting up python-certifi (2018.1.18-2) ...
+Setting up libjs-sphinxdoc (1.6.7-1ubuntu1) ...
+Setting up libjpeg-turbo8:amd64 (1.5.2-0ubuntu5.18.04.1) ...
+Setting up sgml-base (1.29) ...
+Setting up python-roman (2.0.0-3) ...
+Setting up python-dateutil (2.6.1-1) ...
+Setting up python-pygments (2.2.0+dfsg-1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+Setting up docutils-doc (0.14+dfsg-3) ...
+Setting up python-olefile (0.45.1-1) ...
+Setting up python-requests (2.18.4-2ubuntu0.1) ...
+Processing triggers for man-db (2.8.3-2) ...
+Processing triggers for shared-mime-info (1.9-2) ...
+Setting up python-concurrent.futures (3.2.0-1) ...
+Setting up xml-core (0.18) ...
+Setting up javascript-common (11) ...
+Setting up libwebp6:amd64 (0.6.1-2) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu8) ...
+Setting up libtiff5:amd64 (4.0.9-5) ...
+Setting up libwebpmux3:amd64 (0.6.1-2) ...
+Setting up libwebpdemux2:amd64 (0.6.1-2) ...
+Setting up python-pil:amd64 (5.1.0-1) ...
+Processing triggers for sgml-base (1.29) ...
+Setting up docutils-common (0.14+dfsg-3) ...
+Processing triggers for sgml-base (1.29) ...
+Setting up python-docutils (0.14+dfsg-3) ...
+update-alternatives: using /usr/share/docutils/scripts/python2/rst-buildhtml to provide /usr/bin/rst-buildhtml (rst-buildhtml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2html to provide /usr/bin/rst2html (rst2html) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2html4 to provide /usr/bin/rst2html4 (rst2html4) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2html5 to provide /usr/bin/rst2html5 (rst2html5) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2latex to provide /usr/bin/rst2latex (rst2latex) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2man to provide /usr/bin/rst2man (rst2man) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2odt to provide /usr/bin/rst2odt (rst2odt) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2odt_prepstyles to provide /usr/bin/rst2odt_prepstyles (rst2odt_prepstyles) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2pseudoxml to provide /usr/bin/rst2pseudoxml (rst2pseudoxml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2s5 to provide /usr/bin/rst2s5 (rst2s5) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2xetex to provide /usr/bin/rst2xetex (rst2xetex) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rst2xml to provide /usr/bin/rst2xml (rst2xml) in auto mode
+update-alternatives: using /usr/share/docutils/scripts/python2/rstpep2html to provide /usr/bin/rstpep2html (rstpep2html) in auto mode
+Setting up python-botocore (1.8.48+repack-1) ...
+Setting up python-s3transfer (0.1.13-1) ...
+Setting up python-boto3 (1.4.2-1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+root@master:/etc/ansible# ansible-playbook s3.yml
+
+PLAY [localhost] ************************************************************************************************************************
+
+TASK [createa s3 bucket] ****************************************************************************************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: BucketAlreadyExists: An error occurred (BucketAlreadyExists) when calling the CreateBucket operation: The requested bucket name is not available. The bucket namespace is shared by all users of the system. Please select a different name and try again.
+fatal: [localhost]: FAILED! => {"boto3_version": "1.4.2", "botocore_version": "1.8.48", "changed": false, "error": {"bucket_name": "raja", "code": "BucketAlreadyExists", "message": "The requested bucket name is not available. The bucket namespace is shared by all users of the system. Please select a different name and try again."}, "msg": "Failed while creating bucket: An error occurred (BucketAlreadyExists) when calling the CreateBucket operation: The requested bucket name is not available. The bucket namespace is shared by all users of the system. Please select a different name and try again.", "response_metadata": {"host_id": "+3hx1EMrsQ5Zq/mDiaxMEHY2o2b/0YrJR89n/3bd69aHDmUqYB1n9nGEF2pxfTvODe6lE4XQl0w=", "http_headers": {"content-_type": "application/xml", "date": "Sat, 05 Jan 2019 04:33:27 GMT", "server": "AmazonS3", "transfer-_encoding": "chunked", "x-amz-bucket-region": "ap-southeast-1", "x-amz-id-2": "+3hx1EMrsQ5Zq/mDiaxMEHY2o2b/0YrJR89n/3bd69aHDmUqYB1n9nGEF2pxfTvODe6lE4XQl0w=", "x-amz-request-id": "AAA359C75766C008"}, "http_status_code": 409, "request_id": "AAA359C75766C008", "retry_attempts": 0}}
+        to retry, use: --limit @/etc/ansible/s3.retry
+
+PLAY RECAP ******************************************************************************************************************************
+localhost                  : ok=0    changed=0    unreachable=0    failed=1
+
+root@master:/etc/ansible# vi s3.yml
+root@master:/etc/ansible# ansible-playbook s3.yml
+
+PLAY [localhost] ************************************************************************************************************************
+
+TASK [createa s3 bucket] ****************************************************************************************************************
+changed: [localhost]
+
+PLAY RECAP ******************************************************************************************************************************
+localhost                  : ok=1    changed=1    unreachable=0    failed=0
+
+root@master:/etc/ansible# cat s3.yml
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+     bucketname: raja36
+  tasks:
+   - name: createa s3 bucket
+     s3_bucket:
+      name: "{{ bucketname }}"
+      aws_access_key: AKIAJCTAD5XONVYIX6JA
+      aws_secret_key: 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
+      region: us-east-1
+root@master:/etc/ansible# cd
+root@master:~# cat list.sh
+#!/bin/bash/
+echo "list of files with 1mb sized"
+find . -type f -size 1M
+echo "create new file with perticular size"
+truncate -s 5M rajendra.txt
+ls -ltr
+echo "remove file"
+rm -rf rajendra.txt
+ls -ltr
+cat>raja.txt
+root@master:~#
