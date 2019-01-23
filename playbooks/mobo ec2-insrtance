@@ -1,0 +1,352 @@
+Authenticating with public key "imported-openssh-key"
+     ┌────────────────────────────────────────────────────────────────────┐
+     │                        • MobaXterm 11.0 •                          │
+     │            (SSH client, X-server and networking tools)             │
+     │                                                                    │
+     │ ➤ SSH session to ec2-user@107.22.61.180                            │
+     │   • SSH compression : ✔                                            │
+     │   • SSH-browser     : ✔                                            │
+     │   • X11-forwarding  : ✘  (disabled or not supported by server)     │
+     │   • DISPLAY         : 192.168.0.136:0.0                            │
+     │                                                                    │
+     │ ➤ For more info, ctrl+click on help or visit our website           │
+     └────────────────────────────────────────────────────────────────────┘
+
+Last login: Wed Jan 23 05:49:11 2019 from 183.82.221.110
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ansible ~]$ sudo -i
+[root@ansible ~]# cd /etc/ansible/
+[root@ansible ansible]# ls
+ansible.cfg  hosts  playbooks  roles
+[root@ansible ansible]# cd playbooks/
+[root@ansible playbooks]# ls
+ec2_instace.retry  ec2_instace.yml  ec2_test.retry  ec2_test.yml
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "The following group names are not valid: launch-wizard-1"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "The following group names are not valid: launch-wizard-2"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "The following group names are not valid: launch-wizard-3"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "Instance creation failed => InvalidAMIID.NotFound: The image id '[ami-0080e4c5bc078760e]' does not exist"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "Instance creation failed => InvalidAMIID.NotFound: The image id '[ami-011b3ccf1bd6db744]' does not exist"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# top
+top - 07:08:03 up  1:32,  3 users,  load average: 0.00, 0.00, 0.00
+Tasks: 104 total,   1 running,  68 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1009388 total,   638224 free,    87656 used,   283508 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   749764 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "Instance creation failed => InvalidKeyPair.NotFound: The key pair 'raja' does not exist"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_test.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# top
+top - 07:14:01 up  1:38,  3 users,  load average: 0.00, 0.00, 0.00
+Tasks: 104 total,   1 running,  68 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1009388 total,   638076 free,    87740 used,   283572 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   749644 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+    1 root      20   0   43604   5280   3932 S  0.0  0.5   0:01.80 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kthreadd
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
+    5 root      20   0       0      0      0 I  0.0  0.0   0:00.01 kworker/u30+
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+    7 root      20   0       0      0      0 S  0.0  0.0   0:00.09 ksoftirqd/0
+    8 root      20   0       0      0      0 I  0.0  0.0   0:00.17 rcu_sched
+    9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh
+   10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+   11 root      rt   0       0      0      0 S  0.0  0.0   0:00.01 watchdog/0
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   13 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   14 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   20 root      20   0       0      0      0 S  0.0  0.0   0:00.00 xenbus
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.02 xenwatch
+  170 root      20   0       0      0      0 S  0.0  0.0   0:00.00 khungtaskd
+  171 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+  172 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+  174 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kcompactd0
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+changed: [ansible]
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=1    changed=1    unreachable=0    failed=0
+
+[root@ansible playbooks]# cat ec2_test.yml
+---
+- name: Create a new Demo EC2 instance
+  hosts: cicd
+  gather_facts: False
+
+  vars:
+   region: ap-southeast-2
+   instance_type: t2.micro
+   ami: ami-02fd0b06f06d93dfc # Redhat
+   keypair: raja
+
+  tasks:
+   - name: Create an ec2 instance
+     ec2:
+      aws_access_key: AKIAJP4354ZNAYI4BFUA
+      aws_secret_key: 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
+      key_name: "{{ keypair }}"
+      group: default  # secuirity
+      instance_type: "{{ instance_type}}"
+      image: "{{ ami }}"
+      wait: true
+      region: "{{ region }}"
+      count: 1  # default
+      count_tag:
+       Name: Demo
+      instance_tags:
+       Name: Demo
+      vpc_subnet_id: subnet-862a85de
+      assign_public_ip: yes
+     register: ec2
+
+
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/etc/ansible/playbooks/ec2_test.yml': line 21, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      image: "{{ ami }}"
+      - name: waiting for creating an instance
+      ^ here
+
+exception type: <class 'yaml.parser.ParserError'>
+exception: while parsing a block mapping
+  in "<unicode string>", line 15, column 7
+did not find expected key
+  in "<unicode string>", line 21, column 7
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/etc/ansible/playbooks/ec2_test.yml': line 21, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      image: "{{ ami }}"
+      - name: waiting for creatng an instance
+      ^ here
+
+exception type: <class 'yaml.parser.ParserError'>
+exception: while parsing a block mapping
+  in "<unicode string>", line 15, column 7
+did not find expected key
+  in "<unicode string>", line 21, column 7
+[root@ansible playbooks]# vi ec2_test.yml
+[root@ansible playbooks]# ansible-playbook ec2_test.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+changed: [ansible]
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=1    changed=1    unreachable=0    failed=0
+
+[root@ansible playbooks]# cat ec2_test.yml
+---
+- name: Create a new Demo EC2 instance
+  hosts: cicd
+  gather_facts: False
+
+  vars:
+   region: ap-southeast-2
+   instance_type: t2.micro
+   ami: ami-02fd0b06f06d93dfc # Redhat
+   keypair: raja
+
+  tasks:
+   - name: Create an ec2 instance
+     ec2:
+      aws_access_key: AKIAJP4354ZNAYI4BFUA
+      aws_secret_key: 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
+      key_name: "{{ keypair }}"
+      group: default  # secuirity
+      instance_type: "{{ instance_type}}"
+      image: "{{ ami }}"
+
+      wait: true
+      region: "{{ region }}"
+      count: 3  # default
+      count_tag:
+       Name: Test
+      instance_tags:
+       Name: Raja1,raja2,raja3
+      vpc_subnet_id: subnet-862a85de
+      assign_public_ip: yes
+     register: ec2
+
+
+[root@ansible playbooks]#
+────────────────────────────────────────────────────────────────────────────────
+
+Session stopped
+    - Press <return> to exit tab
+    - Press R to restart session
+    - Press S to save terminal output to file
+
+Network error: Software caused connection abort
+Authenticating with public key "imported-openssh-key"
+     ┌────────────────────────────────────────────────────────────────────┐
+     │                        • MobaXterm 11.0 •                          │
+     │            (SSH client, X-server and networking tools)             │
+     │                                                                    │
+     │ ➤ SSH session to ec2-user@107.22.61.180                            │
+     │   • SSH compression : ✔                                            │
+     │   • SSH-browser     : ✔                                            │
+     │   • X11-forwarding  : ✘  (disabled or not supported by server)     │
+     │   • DISPLAY         : 192.168.0.136:0.0                            │
+     │                                                                    │
+     │ ➤ For more info, ctrl+click on help or visit our website           │
+     └────────────────────────────────────────────────────────────────────┘
+
+Last login: Wed Jan 23 06:55:49 2019 from 183.82.221.110
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ansible ~]$ sudo -i
+[root@ansible ~]# cd /etc/ansible/playbooks/
+[root@ansible playbooks]# ls
+ec2_instace.retry  ec2_instace.yml  ec2_test.retry  ec2_test.yml
+[root@ansible playbooks]# vi ec2_sydney.yml
+[root@ansible playbooks]# ansible-playbook ec2_sydney.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "msg": "parameters are mutually exclusive: ['exact_count', 'state']"}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_sydney.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_sydney.yml
+[root@ansible playbooks]# ansible-playbook ec2_sydney.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "module_stderr": "Shared connection to ansible closed.\r\n", "module_stdout": "Traceback (most recent call last):\r\n  File \"/tmp/ansible_OdHBil/ansible_module_ec2.py\", line 1725, in <module>\r\n    main()\r\n  File \"/tmp/ansible_OdHBil/ansible_module_ec2.py\", line 1701, in main\r\n    (changed, instance_dict_array, new_instance_ids) = startstop_instances(module, ec2, instance_ids, state, instance_tags)\r\n  File \"/tmp/ansible_OdHBil/ansible_module_ec2.py\", line 1445, in startstop_instances\r\n    for res in ec2.get_all_instances(instance_ids, filters=filters):\r\n  File \"/usr/lib/python2.7/site-packages/boto/ec2/connection.py\", line 585, in get_all_instances\r\n    max_results=max_results)\r\n  File \"/usr/lib/python2.7/site-packages/boto/ec2/connection.py\", line 681, in get_all_reservations\r\n    [('item', Reservation)], verb='POST')\r\n  File \"/usr/lib/python2.7/site-packages/boto/connection.py\", line 1186, in get_list\r\n    raise self.ResponseError(response.status, response.reason, body)\r\nboto.exception.EC2ResponseError: EC2ResponseError: 401 Unauthorized\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<Response><Errors><Error><Code>AuthFailure</Code><Message>AWS was not able to validate the provided access credentials</Message></Error></Errors><RequestID>51ec0306-e396-4a78-afb4-11333a393953</RequestID></Response>\r\n", "msg": "MODULE FAILURE", "rc": 0}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_sydney.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]# vi ec2_sydney.yml
+[root@ansible playbooks]# ansible-playbook ec2_sydney.yml
+
+PLAY [Create a new Demo EC2 instance] ******************************************
+
+TASK [Create an ec2 instance] **************************************************
+fatal: [ansible]: FAILED! => {"changed": false, "failed": true, "module_stderr": "Shared connection to ansible closed.\r\n", "module_stdout": "Traceback (most recent call last):\r\n  File \"/tmp/ansible_58cfk9/ansible_module_ec2.py\", line 1725, in <module>\r\n    main()\r\n  File \"/tmp/ansible_58cfk9/ansible_module_ec2.py\", line 1717, in main\r\n    (instance_dict_array, new_instance_ids, changed) = create_instances(module, ec2, vpc)\r\n  File \"/tmp/ansible_58cfk9/ansible_module_ec2.py\", line 1048, in create_instances\r\n    vpc_id = vpc.get_all_subnets(subnet_ids=[vpc_subnet_id])[0].vpc_id\r\n  File \"/usr/lib/python2.7/site-packages/boto/vpc/__init__.py\", line 1152, in get_all_subnets\r\n    return self.get_list('DescribeSubnets', params, [('item', Subnet)])\r\n  File \"/usr/lib/python2.7/site-packages/boto/connection.py\", line 1186, in get_list\r\n    raise self.ResponseError(response.status, response.reason, body)\r\nboto.exception.EC2ResponseError: EC2ResponseError: 401 Unauthorized\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<Response><Errors><Error><Code>AuthFailure</Code><Message>AWS was not able to validate the provided access credentials</Message></Error></Errors><RequestID>b2f7b3e9-e2ac-4360-8f2b-ff966f20d20a</RequestID></Response>\r\n", "msg": "MODULE FAILURE", "rc": 0}
+        to retry, use: --limit @/etc/ansible/playbooks/ec2_sydney.retry
+
+PLAY RECAP *********************************************************************
+ansible                    : ok=0    changed=0    unreachable=0    failed=1
+
+[root@ansible playbooks]#
