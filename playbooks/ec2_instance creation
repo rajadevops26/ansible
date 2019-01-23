@@ -1,0 +1,62 @@
+---
+- name: Create a new Demo EC2 instance
+  hosts: cicd ---------> current ansible server 
+  gather_facts: False----------->root authontication become false
+
+  vars:
+   region: ap-southeast-2---------->aws region zones
+   instance_type: t2.micro
+   ami: ami-02fd0b06f06d93dfc # Redhat----------> same region amis( Each and every region having diff amis)
+   keypair: raja-----------------> already available keypair
+
+  tasks:
+   - name: Create an ec2 instance
+     ec2:
+      aws_access_key: AKIAJP4354ZNAYI4BFUA--------->security credentioals in aws
+      aws_secret_key: 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----------->security credentials in aws
+      key_name: "{{ keypair }}"
+      group: default  # secuirity
+      instance_type: "{{ instance_type}}"
+      image: "{{ ami }}"
+      wait: true
+      region: "{{ region }}"
+      count: 1  # default------------> no of instances
+      count_tag:
+       Name: Demo-------------> instance tag
+      instance_tags:
+       Name: Demo------------->instance name
+      vpc_subnet_id: subnet-862a85de------------>vpc region subnet only accept
+      assign_public_ip: yes
+     register: ec2
+************************************************************************************	
+---
+- name: Create a new Demo EC2 instance
+  hosts: cicd
+  gather_facts: False
+
+  vars:
+   region: ap-southeast-2
+   instance_type: t2.micro
+   ami: ami-02fd0b06f06d93dfc # Redhat
+   keypair: raja
+
+  tasks:
+   - name: Create an ec2 instance
+     ec2:
+      aws_access_key: AKIAJP4354ZNAYI4BFUA
+      aws_secret_key: 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
+      key_name: "{{ keypair }}"
+      group: default  # secuirity
+      instance_type: "{{ instance_type}}"
+      image: "{{ ami }}"
+
+      wait: true
+      region: "{{ region }}"
+      count: 3  # default
+      count_tag:
+       Name: Test
+      instance_tags:
+       Name: Raja1,raja2,raja3
+      vpc_subnet_id: subnet-862a85de
+      assign_public_ip: yes
+     register: ec2
