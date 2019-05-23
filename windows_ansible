@@ -3,6 +3,26 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 press y
 enter
 system automatically restart to activate ubuntu on windows
+open ubuntu once again
+**********
+Installing, this may take a few minutes...
+
+
+Please create a default UNIX user account. The username does not need to match your Windows username.
+For more information visit: https://aka.ms/wslusers
+Enter new UNIX username: ramullakota
+Enter new UNIX password:admin
+Retype new UNIX password:admin
+passwd: password updated successfully
+Installation successful!
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+ramullakota@DESKTOP-K988EAN:~$
+sudo -i
+[sudo] password for ramullakota:
+root@DESKTOP-K988EAN:~#
+
+
 
 sudo apt-get update
 sudo apt-get install software-properties-common
@@ -20,10 +40,10 @@ hosts: localhost
 tasks:
 - name: echo a message
 debug: msg="this is working"
-ansible playbook testbook.yml --connection=local
+ansible-playbook testbook.yml --connection=local
 nano inventory
 [testing]
 localhost
 test.domain.tld
 test.domain.tld
-ansible playbook -i inventory testbook.yml --connection=local
+ansible-playbook -i inventory testbook.yml --connection=local
