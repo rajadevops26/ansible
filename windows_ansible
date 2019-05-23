@@ -1,3 +1,29 @@
 open powershell as admin
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-restart computer
+press y
+enter
+system automatically restart to activate ubuntu on windows
+
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+
+
+example
+nano testbook.yml
+- name: testing ansible
+hosts: localhost
+
+
+tasks:
+- name: echo a message
+debug: msg="this is working"
+ansible playbook testbook.yml --connection=local
+nano inventory
+[testing]
+localhost
+test.domain.tld
+test.domain.tld
+ansible playbook -i inventory testbook.yml --connection=local
