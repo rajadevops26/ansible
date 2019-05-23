@@ -1,0 +1,3 @@
+open powershell as admin
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+restart computer
