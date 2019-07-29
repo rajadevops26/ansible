@@ -60,6 +60,62 @@ $ Ansible all -m setup
 ```
 
 
+├── README.md
+├── defaults
+│ └── main.yml
+├── files
+├── handlers
+│ └── main.yml
+├── meta
+│ └── main.yml
+├── tasks
+│ └── main.yml
+├── templates
+└── vars
+└── main.yml
+
+# Roles
+- A role is the Ansible way of bundling automation content and making it reusable. Roles are organizational components that can be assigned to a set of hosts to organize tasks.
+- Therefore, instead of creating a monolithic playbook, we can create multiple roles, with each role assigned to complete a unit of work.
+- For example: a webserver role can be defined to install Apache and Varnish on a specified group of servers.
+
+# Handlers
+- Handlers are similar to tasks except that a handler will be executed only when it is called by an event(or)
+- Task which is called only if a notifier is present.
+ - For example, a handler that will start the httpd service after a task installed httpd. The handler is called by the [notify] directive. 
+ - Important: the name of the notify directive and the handler must be the same.
+
+
+# Notifier: 
+- Section attributed to a task which calls a handler if the output is changed 
+
+# Tag: 
+- Name set to a task which can be used later on to issue just that specific task or group of tasks. 
+
+# Templates
+- Templates files are based on Python’s Jinja2 template engine and have a .j2 extension.
+- You can, if you need, place contents of your index.html file into a template file.
+- But the real power of these files comes when you use variables. You can use Ansible’s [facts] and even call custom variables in these template files.
+
+# Fact
+- Information fetched from the client system from the global variables with the gather-facts operation
+
+# files
+-  It contains regular files that need to be transferred to the hosts we are configuring for this role.
+- This may also include script files to run. 
+
+# meta
+-  This directory can contain files that establish role dependencies. 
+- We can list roles that must be applied before the current role can work correctly.
+
+# vars
+- Variables for the roles can be specified in this directory and used in our configuration files.
+
+# defaults
+- Within defaults, there is a main.yml file with the default variables used by a role. For the Packer role.
+
+
+
 
 
 
