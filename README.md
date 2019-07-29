@@ -1,6 +1,6 @@
 # ANSIBLE ARCHITECTURE
 
-![logo](https://cdn.intellipaat.com/mediaFiles/2018/12/9.png)
+![logo](https://3.bp.blogspot.com/-tC1S8lMBm3Y/V47kVwG2B3I/AAAAAAAAAwY/Xz2UJP9wwJIs0t-QJofhJl_DZcdTYjIzgCLcB/s1600/ANSIBLE_DIAGRAM.jpg)
 
 # Ansible components
 ## 1.Inventory
