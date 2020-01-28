@@ -1,0 +1,228 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+
+  vars:
+    key_name: ansible
+    region: us-east-1
+    image: ami-09d069a04349dc3cb
+    id: "website-app"
+    sec_group: "{{ id }}-sec"
+
+  tasks:
+
+    - name: Facts
+      block:
+
+      - name: Get instances facts
+        ec2_instance_facts:
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          region: "{{ region }}"
+        register: result
+
+      - name: Instances ID
+        debug:
+          msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_dns_name }}"
+        loop: "{{ result.instances }}"
+
+      tags: always
+
+
+    - name: Provisioning EC2 instances
+      block:
+      - name: Upload public key to AWS
+        ec2_key:
+          name: "{{ key_name }}"
+          key_material: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyZs8UPVPAm25Aki1+aSod3pUSRfIDq8hCb6bRpLejwcU6zDUxLKRUdia6z658NkwquK7En54J6RFxwSmeeTU3kpyGwMnoifbnZl9Eqi5axENQY/ybHdxV/l5AwpgVU9ZDR3g/q/UkW/0KiIqmS9aXR12jxqYzf+Tehabk0vR90aoehf07fJKu6/4lzzcoMuyRcLP21pXsOr7G5D1VN+BsLJuaPT1PCCGX+toahZLpvTjt8JQiQ3QuCt+lsLQ2Ewo5jHZ8UAF6ZFb7rG++NM3dEf2xl0ux4Xz1w220i2ZscjfgcMMQGJy1PJp+eMBRj8mnTLXabSfn13eDhpX93arx root@master'
+          region: "{{ region }}"
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+      - name: Create security group
+        ec2_group:
+          name: "{{ sec_group }}"
+          description: "Sec group for app {{ id }}"
+          region: "{{ region }}"
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          rules:
+            - proto: tcp
+              ports:
+                - 22
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on ssh port
+        register: result_sec_group
+
+
+      - name: Provision instance
+        ec2:
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          key_name: "{{ key_name }}"
+          id: "{{ id }}"
+          group_id: "{{ result_sec_group.group_id }}"
+          image: "{{ image }}"
+          instance_type: t2.micro
+          region: "{{ region }}"
+          wait: true
+          count: 1
+      tags: ['never', 'create_ec2']
+
+
+
+
+
+***********************************************
+[ec2-user@ip-172-31-90-250 ~]$ cat /etc/issue
+Amazon Linux AMI release 2018.03
+Kernel \r on an \m
+
+[ec2-user@ip-172-31-90-250 ~]$ ls -a
+.  ..  .bash_logout  .bash_profile  .bashrc  .ssh
+[ec2-user@ip-172-31-90-250 ~]$ cd .ssh/
+[ec2-user@ip-172-31-90-250 .ssh]$ ls
+authorized_keys
+[ec2-user@ip-172-31-90-250 .ssh]$ cat authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyZs8UPVPAm25Aki1+aSod3pUSRfIDq8hCb6bRpLejwcU6zDUxLKRUdia6z658NkwquK7En54J6RFxwSmeeTU3kpyGwMnoifbnZl9Eqi5axENQY/ybHdxV/l5AwpgVU9ZDR3g/q/UkW/0KiIqmS9aXR12jxqYzf+Tehabk0vR90aoehf07fJKu6/4lzzcoMuyRcLP21pXsOr7G5D1VN+BsLJuaPT1PCCGX+toahZLpvTjt8JQiQ3QuCt+lsLQ2Ewo5jHZ8UAF6ZFb7rG++NM3dEf2xl0ux4Xz1w220i2ZscjfgcMMQGJy1PJp+eMBRj8mnTLXabSfn13eDhpX93arx ansible
+[ec2-user@ip-172-31-90-250 .ssh]$ ping ansible
+ping: unknown host ansible
+[ec2-user@ip-172-31-90-250 .ssh]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+[ec2-user@ip-172-31-90-250 .ssh]$ sudo -i
+[root@ip-172-31-90-250 ~]# cd .ssh/
+[root@ip-172-31-90-250 .ssh]# ls
+authorized_keys
+[root@ip-172-31-90-250 .ssh]# cat authorized_keys
+no-port-forwarding,no-agent-forwarding,no-X11-forwarding,command="echo 'Please login as the user \"ec2-user\" rather than the user \"root\".';echo;sleep 10" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyZs8UPVPAm25Aki1+aSod3pUSRfIDq8hCb6bRpLejwcU6zDUxLKRUdia6z658NkwquK7En54J6RFxwSmeeTU3kpyGwMnoifbnZl9Eqi5axENQY/ybHdxV/l5AwpgVU9ZDR3g/q/UkW/0KiIqmS9aXR12jxqYzf+Tehabk0vR90aoehf07fJKu6/4lzzcoMuyRcLP21pXsOr7G5D1VN+BsLJuaPT1PCCGX+toahZLpvTjt8JQiQ3QuCt+lsLQ2Ewo5jHZ8UAF6ZFb7rG++NM3dEf2xl0ux4Xz1w220i2ZscjfgcMMQGJy1PJp+eMBRj8mnTLXabSfn13eDhpX93arx ansible
+[root@ip-172-31-90-250 .ssh]# exit
+logout
+[ec2-user@ip-172-31-90-250 .ssh]$ exit
+
+
+
+
+
+***************************************************work**************************
+$ ssh -i "ansible.pem" ec2-user@ec2-34-205-141-30.compute-1.amazonaws.com
+Last login: Tue Jan 28 10:14:25 2020 from 157.48.91.138
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@master ~]$ sudo -i
+[root@master ~]# cd /etc/ansible/playbooks/AWS_Ansible/
+[root@master AWS_Ansible]# clear
+[root@master AWS_Ansible]# ls
+awsec2.yml  group_vars  palybook.yml
+[root@master AWS_Ansible]# rm palybook.yml
+rm: remove regular file ‘palybook.yml’? yes
+[root@master AWS_Ansible]# ls
+awsec2.yml  group_vars
+[root@master AWS_Ansible]# vi awsec2.yml
+[root@master AWS_Ansible]# ansible-playbook awsec2.yml  --ask-vault-pass --tags create_ec2
+Vault password:
+ [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost
+does not match 'all'
+
+
+PLAY [localhost] *****************************************************************************************
+
+TASK [Get instances facts] *******************************************************************************
+ok: [localhost]
+
+TASK [Instances ID] **************************************************************************************
+ok: [localhost] => (item={u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'security_groups': [{u'group_id': u'sg-0d3e580cec68a352d', u'group_name': u'launch-wizard-1'}], u'monitoring': {u'state': u'disabled'}, u'subnet_id': u'subnet-50121a7e', u'ebs_optimized': False, u'state': {u'code': 16, u'name': u'running'}, u'source_dest_check': True, u'client_token': u'', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/xvda', u'public_ip_address': u'34.205.141.30', u'tags': {u'Name': u'master'}, u'key_name': u'ansible', u'image_id': u'ami-062f7200baf2fa504', u'ena_support': True, u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'block_device_mappings': [{u'ebs': {u'status': u'attached', u'delete_on_termination': True, u'attach_time': u'2020-01-27T10:11:28+00:00', u'volume_id': u'vol-03626df53607a63a1'}, u'device_name': u'/dev/xvda'}], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'applied', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'ami_launch_index': 0, u'hypervisor': u'xen', u'network_interfaces': [{u'status': u'in-use', u'description': u'', u'interface_type': u'interface', u'ipv6_addresses': [], u'groups': [{u'group_id': u'sg-0d3e580cec68a352d', u'group_name': u'launch-wizard-1'}], u'association': {u'public_ip': u'34.205.141.30', u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'source_dest_check': True, u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'subnet_id': u'subnet-50121a7e', u'network_interface_id': u'eni-035a548d233b30a22', u'attachment': {u'status': u'attached', u'device_index': 0, u'attachment_id': u'eni-attach-00d6575685fa38220', u'delete_on_termination': True, u'attach_time': u'2020-01-27T10:11:27+00:00'}, u'private_ip_addresses': [{u'private_ip_address': u'172.31.85.10', u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'association': {u'public_ip': u'34.205.141.30', u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'primary': True}], u'mac_address': u'12:ce:2d:a7:a2:f1', u'private_ip_address': u'172.31.85.10', u'vpc_id': u'vpc-66a7f91c', u'owner_id': u'133153625526'}], u'launch_time': u'2020-01-27T10:11:27+00:00', u'instance_id': u'i-0a21b8fb043c910cd', u'instance_type': u't2.micro', u'architecture': u'x86_64', u'state_transition_reason': u'', u'private_ip_address': u'172.31.85.10', u'vpc_id': u'vpc-66a7f91c', u'product_codes': []}) => {
+    "msg": "ID: i-0a21b8fb043c910cd - State: running - Public DNS: ec2-34-205-141-30.compute-1.amazonaws.com"
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:37:33 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 1, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:30:37+00:00', u'instance_id': u'i-0b6931670bf389183', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'web-pp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0b6931670bf389183 - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:37:33 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:30:37+00:00', u'instance_id': u'i-06441b8d79a437bdb', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'web-pp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-06441b8d79a437bdb - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:49:09 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:37:11+00:00', u'instance_id': u'i-00abf26ec13b32667', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'eb-app', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-00abf26ec13b32667 - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:57:24 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:49:57+00:00', u'instance_id': u'i-0d9d56ae966a1c13b', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0d9d56ae966a1c13b - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 10:03:45 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T10:01:14+00:00', u'instance_id': u'i-0f97be72ba0d0e0ff', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0f97be72ba0d0e0ff - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 10:30:57 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T10:12:52+00:00', u'instance_id': u'i-0c1fa2c0c0848eed0', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'eb-aspp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0c1fa2c0c0848eed0 - State: terminated - Public DNS: "
+}
+
+TASK [Upload public key to AWS] **************************************************************************
+ok: [localhost]
+
+TASK [Create security group] *****************************************************************************
+changed: [localhost]
+
+TASK [Provision instance] ********************************************************************************
+changed: [localhost]
+
+PLAY RECAP ***********************************************************************************************
+localhost                  : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[root@master AWS_Ansible]# ansible-playbook awsec2.yml  --ask-vault-pass
+Vault password:
+ [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost
+does not match 'all'
+
+
+PLAY [localhost] *****************************************************************************************
+
+TASK [Get instances facts] *******************************************************************************
+ok: [localhost]
+
+TASK [Instances ID] **************************************************************************************
+ok: [localhost] => (item={u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'security_groups': [{u'group_id': u'sg-0d3e580cec68a352d', u'group_name': u'launch-wizard-1'}], u'monitoring': {u'state': u'disabled'}, u'subnet_id': u'subnet-50121a7e', u'ebs_optimized': False, u'state': {u'code': 16, u'name': u'running'}, u'source_dest_check': True, u'client_token': u'', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/xvda', u'public_ip_address': u'34.205.141.30', u'tags': {u'Name': u'master'}, u'key_name': u'ansible', u'image_id': u'ami-062f7200baf2fa504', u'ena_support': True, u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'block_device_mappings': [{u'ebs': {u'status': u'attached', u'delete_on_termination': True, u'attach_time': u'2020-01-27T10:11:28+00:00', u'volume_id': u'vol-03626df53607a63a1'}, u'device_name': u'/dev/xvda'}], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'applied', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'ami_launch_index': 0, u'hypervisor': u'xen', u'network_interfaces': [{u'status': u'in-use', u'description': u'', u'interface_type': u'interface', u'ipv6_addresses': [], u'groups': [{u'group_id': u'sg-0d3e580cec68a352d', u'group_name': u'launch-wizard-1'}], u'association': {u'public_ip': u'34.205.141.30', u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'source_dest_check': True, u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'subnet_id': u'subnet-50121a7e', u'network_interface_id': u'eni-035a548d233b30a22', u'attachment': {u'status': u'attached', u'device_index': 0, u'attachment_id': u'eni-attach-00d6575685fa38220', u'delete_on_termination': True, u'attach_time': u'2020-01-27T10:11:27+00:00'}, u'private_ip_addresses': [{u'private_ip_address': u'172.31.85.10', u'private_dns_name': u'ip-172-31-85-10.ec2.internal', u'association': {u'public_ip': u'34.205.141.30', u'public_dns_name': u'ec2-34-205-141-30.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'primary': True}], u'mac_address': u'12:ce:2d:a7:a2:f1', u'private_ip_address': u'172.31.85.10', u'vpc_id': u'vpc-66a7f91c', u'owner_id': u'133153625526'}], u'launch_time': u'2020-01-27T10:11:27+00:00', u'instance_id': u'i-0a21b8fb043c910cd', u'instance_type': u't2.micro', u'architecture': u'x86_64', u'state_transition_reason': u'', u'private_ip_address': u'172.31.85.10', u'vpc_id': u'vpc-66a7f91c', u'product_codes': []}) => {
+    "msg": "ID: i-0a21b8fb043c910cd - State: running - Public DNS: ec2-34-205-141-30.compute-1.amazonaws.com"
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:37:33 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 1, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:30:37+00:00', u'instance_id': u'i-0b6931670bf389183', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'web-pp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0b6931670bf389183 - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:37:33 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:30:37+00:00', u'instance_id': u'i-06441b8d79a437bdb', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'web-pp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-06441b8d79a437bdb - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:49:09 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:37:11+00:00', u'instance_id': u'i-00abf26ec13b32667', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'eb-app', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-00abf26ec13b32667 - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-04b9e92b5572fa0d1', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 09:57:24 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T09:49:57+00:00', u'instance_id': u'i-0d9d56ae966a1c13b', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/sda1', u'hypervisor': u'xen', u'client_token': u'', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0d9d56ae966a1c13b - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 10:03:45 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T10:01:14+00:00', u'instance_id': u'i-0f97be72ba0d0e0ff', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0f97be72ba0d0e0ff - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'network_interfaces': [], u'root_device_type': u'ebs', u'private_dns_name': u'', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-09d069a04349dc3cb', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'state_transition_reason': u'User initiated (2020-01-28 10:30:57 GMT)', u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'', u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'security_groups': [], u'block_device_mappings': [], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'pending', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'state_reason': {u'message': u'Client.UserInitiatedShutdown: User initiated shutdown', u'code': u'Client.UserInitiatedShutdown'}, u'product_codes': [], u'monitoring': {u'state': u'disabled'}, u'ami_launch_index': 0, u'ena_support': True, u'ebs_optimized': False, u'launch_time': u'2020-01-28T10:12:52+00:00', u'instance_id': u'i-0c1fa2c0c0848eed0', u'instance_type': u't2.micro', u'state': {u'code': 48, u'name': u'terminated'}, u'root_device_name': u'/dev/xvda', u'hypervisor': u'xen', u'client_token': u'eb-aspp', u'virtualization_type': u'hvm', u'architecture': u'x86_64'}) => {
+    "msg": "ID: i-0c1fa2c0c0848eed0 - State: terminated - Public DNS: "
+}
+ok: [localhost] => (item={u'root_device_type': u'ebs', u'private_dns_name': u'ip-172-31-90-250.ec2.internal', u'cpu_options': {u'threads_per_core': 1, u'core_count': 1}, u'security_groups': [{u'group_id': u'sg-0592669f29de2c235', u'group_name': u'website-app-sec'}], u'monitoring': {u'state': u'disabled'}, u'subnet_id': u'subnet-50121a7e', u'ebs_optimized': False, u'state': {u'code': 16, u'name': u'running'}, u'source_dest_check': True, u'client_token': u'website-app', u'virtualization_type': u'hvm', u'root_device_name': u'/dev/xvda', u'public_ip_address': u'184.72.191.80', u'tags': {}, u'key_name': u'ansible', u'image_id': u'ami-09d069a04349dc3cb', u'ena_support': True, u'hibernation_options': {u'configured': False}, u'capacity_reservation_specification': {u'capacity_reservation_preference': u'open'}, u'public_dns_name': u'ec2-184-72-191-80.compute-1.amazonaws.com', u'block_device_mappings': [{u'ebs': {u'status': u'attached', u'delete_on_termination': True, u'attach_time': u'2020-01-28T10:34:11+00:00', u'volume_id': u'vol-0bad6578c6805953a'}, u'device_name': u'/dev/xvda'}], u'metadata_options': {u'http_endpoint': u'enabled', u'state': u'applied', u'http_tokens': u'optional', u'http_put_response_hop_limit': 1}, u'placement': {u'availability_zone': u'us-east-1d', u'tenancy': u'default', u'group_name': u''}, u'ami_launch_index': 0, u'hypervisor': u'xen', u'network_interfaces': [{u'status': u'in-use', u'description': u'', u'interface_type': u'interface', u'ipv6_addresses': [], u'groups': [{u'group_id': u'sg-0592669f29de2c235', u'group_name': u'website-app-sec'}], u'association': {u'public_ip': u'184.72.191.80', u'public_dns_name': u'ec2-184-72-191-80.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'source_dest_check': True, u'private_dns_name': u'ip-172-31-90-250.ec2.internal', u'subnet_id': u'subnet-50121a7e', u'network_interface_id': u'eni-07d729585014b9aab', u'attachment': {u'status': u'attached', u'device_index': 0, u'attachment_id': u'eni-attach-0e019744d1c783474', u'delete_on_termination': True, u'attach_time': u'2020-01-28T10:34:10+00:00'}, u'private_ip_addresses': [{u'private_ip_address': u'172.31.90.250', u'private_dns_name': u'ip-172-31-90-250.ec2.internal', u'association': {u'public_ip': u'184.72.191.80', u'public_dns_name': u'ec2-184-72-191-80.compute-1.amazonaws.com', u'ip_owner_id': u'amazon'}, u'primary': True}], u'mac_address': u'12:75:64:62:0b:4d', u'private_ip_address': u'172.31.90.250', u'vpc_id': u'vpc-66a7f91c', u'owner_id': u'133153625526'}], u'launch_time': u'2020-01-28T10:34:10+00:00', u'instance_id': u'i-095468a294f010ca4', u'instance_type': u't2.micro', u'architecture': u'x86_64', u'state_transition_reason': u'', u'private_ip_address': u'172.31.90.250', u'vpc_id': u'vpc-66a7f91c', u'product_codes': []}) => {
+    "msg": "ID: i-095468a294f010ca4 - State: running - Public DNS: ec2-184-72-191-80.compute-1.amazonaws.com"
+}
+
+PLAY RECAP ***********************************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[root@master AWS_Ansible]# ssh -i "ansible.pem" ec2-user@ec2-184-72-191-80.compute-1.amazonaws.com
+Warning: Identity file ansible.pem not accessible: No such file or directory.
+The authenticity of host 'ec2-184-72-191-80.compute-1.amazonaws.com (172.31.90.250)' can't be established.
+ECDSA key fingerprint is SHA256:MP4XzH0tT/4dOjQDzSpLmx65KjowpD5kRyks0OpZ1/Y.
+ECDSA key fingerprint is MD5:21:a8:17:41:58:49:c1:65:c5:9e:da:00:b2:7e:a8:e7.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'ec2-184-72-191-80.compute-1.amazonaws.com,172.31.90.250' (ECDSA) to the list of known hosts.
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-ami/2018.03-release-notes/
+No packages needed for security; 5 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-90-250 ~]$
