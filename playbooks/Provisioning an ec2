@@ -1,0 +1,73 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+
+  vars:
+    key_name: ansible
+    region: us-east-1
+    image: ami-09d069a04349dc3cb
+    id: "eb-aspp"
+    sec_group: "{{ id }}-sec"
+
+  tasks:
+
+    - name: Facts
+      block:
+
+      - name: Get instances facts
+        ec2_instance_facts:
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          region: "{{ region }}"
+        register: result
+
+      - name: Instances ID
+        debug:
+          msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_dns_name }}"
+        loop: "{{ result.instances }}"
+
+      tags: always
+
+
+    - name: Provisioning EC2 instances
+      block:
+      - name: Upload public key to AWS
+        ec2_key:
+          name: "{{ key_name }}"
+          key_material: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyZs8UPVPAm25Aki1+aSod3pUSRfIDq8hCb6bRpLejwcU6zDUxLKRUdia6z658NkwquK7En54J6RFxwSmeeTU3kpyGwMnoifbnZl9Eqi5axENQY/ybHdxV/l5AwpgVU9ZDR3g/q/UkW/0KiIqmS9aXR12jxqYzf+Tehabk0vR90aoehf07fJKu6/4lzzcoMuyRcLP21pXsOr7G5D1VN+BsLJuaPT1PCCGX+toahZLpvTjt8JQiQ3QuCt+lsLQ2Ewo5jHZ8UAF6ZFb7rG++NM3dEf2xl0ux4Xz1w220i2ZscjfgcMMQGJy1PJp+eMBRj8mnTLXabSfn13eDhpX93arx root@master'
+          region: "{{ region }}"
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+      - name: Create security group
+        ec2_group:
+          name: "{{ sec_group }}"
+          description: "Sec group for app {{ id }}"
+          region: "{{ region }}"
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          rules:
+            - proto: tcp
+              ports:
+                - 22
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on ssh port
+        register: result_sec_group
+
+
+      - name: Provision instance
+        ec2:
+          aws_access_key: "{{ec2_access_key}}"
+          aws_secret_key: "{{ec2_secret_key}}"
+          key_name: "{{ key_name }}"
+          id: "{{ id }}"
+          group_id: "{{ result_sec_group.group_id }}"
+          image: "{{ image }}"
+          instance_type: t2.micro
+          region: "{{ region }}"
+          wait: true
+          count: 1
+      tags: ['never', 'create_ec2']
+      *****************************************************************************
+      wait for few minutes other wise u get an permission denied error and not require pem key will connect in aws account
