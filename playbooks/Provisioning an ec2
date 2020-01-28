@@ -69,5 +69,4 @@
           wait: true
           count: 1
       tags: ['never', 'create_ec2']
-      *****************************************************************************
-      wait for few minutes other wise u get an permission denied error and not require pem key will connect in aws account
+      
