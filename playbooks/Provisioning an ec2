@@ -70,3 +70,17 @@
           count: 1
       tags: ['never', 'create_ec2']
       
+      
+      ###############################################
+       need to change everytime id to create instances
+
+*****************************************************************************
+      wait for few minutes other wise u get an permission denied error and not require pem key will connect in aws account
+  id: "web-app"--------------must change
+ key_name: ansible------------default(already esit one)
+    region: us-east-1-----change
+    image: ami-09d069a04349dc3cb---------change for every region
+ key_material: 'ssh-rsa AAAAB3---------------run machine ssh public key.pub
+count: 1------------- no of instances
+      tags: ['never', 'create_ec2']--------------without tag not work
+      
