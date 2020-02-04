@@ -1,0 +1,17 @@
+---
+- hosts: webserver
+  remote_user: ec2-user
+  become: yes
+  gather_facts: no
+  pre_tasks:
+  - name: 'install python'
+    raw: 'sudo yum -y install python'
+  tasks:
+  - name: Install Httpd
+    yum:
+       name: httpd
+       state: present
+  - service:
+       name: httpd
+       state: started
+       enabled: yes
