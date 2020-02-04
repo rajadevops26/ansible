@@ -1,0 +1,26 @@
+---
+- hosts: local
+  connection: local
+  vars:
+    region: us-east-1
+  vars_files:
+    -  info/aws-credentials.yml
+  tasks:
+    - name: Gather EC2 facts
+      ec2_instance_facts:
+        region: "{{ region }}"
+        filters:
+          "tag:Type": "webserver"
+        aws_access_key: "{{  AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{  AWS_SECRET_ACCESS_KEY }}"
+      register: ec2
+    - debug: var=ec2
+
+    - name: Terminate EC2 Instance(s)
+      ec2:
+        instance_ids: '{{ item.instance_id }}'
+        state: absent
+        region: "{{ region }}"
+        aws_access_key: "{{  AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{  AWS_SECRET_ACCESS_KEY }}"
+      with_items: "{{ ec2.instances }}"
